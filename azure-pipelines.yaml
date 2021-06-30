@@ -91,7 +91,7 @@ stages:
   displayName: 'Deploy zeebe cluster & operator in UAT'
   condition: succeeded('BUILD')
   pool:
-    name: aks-pool-uat
+    vmImage: windows-2019
   jobs:
   - deployment: DeployZeebeUAT
     displayName: 'Deploy zeebe cluster & operator'
