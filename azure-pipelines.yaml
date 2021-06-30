@@ -67,15 +67,15 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: HelmDeploy@0
-            displayName: 'Deploy zeebe cluster'
-            inputs:
-              namespace: 'zeebe'
-              command: upgrade
-              arguments: '--timeout 900s'
-              chartType: FilePath
-              chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
-              releaseName: '$(release_name)-cluster' 
+          # - task: HelmDeploy@0
+          #   displayName: 'Deploy zeebe cluster'
+          #   inputs:
+          #     namespace: 'zeebe'
+          #     command: upgrade
+          #     arguments: '--timeout 900s'
+          #     chartType: FilePath
+          #     chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
+          #     releaseName: '$(release_name)-cluster' 
 
           - task: HelmDeploy@0
             displayName: 'Deploy zeebe operator'
@@ -103,15 +103,15 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: HelmDeploy@0
-            displayName: 'Deploy zeebe cluster'
-            inputs:
-              namespace: 'default'
-              command: upgrade
-              arguments: '--timeout 600s'
-              chartType: FilePath
-              chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
-              releaseName: '$(release_name)-cluster' 
+          # - task: HelmDeploy@0
+          #   displayName: 'Deploy zeebe cluster'
+          #   inputs:
+          #     namespace: 'default'
+          #     command: upgrade
+          #     arguments: '--timeout 600s'
+          #     chartType: FilePath
+          #     chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
+          #     releaseName: '$(release_name)-cluster' 
 
           - task: HelmDeploy@0
             displayName: 'Deploy zeebe operator'
