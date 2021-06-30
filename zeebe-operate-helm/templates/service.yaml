@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: operator-lb
+  name: operator-svc
 spec:
   ports:
   - name: proxy-port
