@@ -42,7 +42,7 @@ stages:
     - task: CopyFiles@2
       displayName: Copy CI files to artifact directory
       inputs:
-        SourceFolder: zeebe-operate-helm/ci
+        SourceFolder: zeebe-operate-helm/templates
         Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)-operator'
 
