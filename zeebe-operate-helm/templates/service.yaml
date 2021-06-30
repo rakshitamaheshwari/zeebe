@@ -13,3 +13,19 @@ spec:
     protocol: TCP
   selector:
     app: {{ include "zeebe-operate.fullname" . }}
+
+---
+    
+apiVersion: v1
+kind: Service
+metadata:
+  name: operator-lb
+spec:
+  ports:
+  - name: proxy-port
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: zeebe-operator-zeebe-operate
+  type: LoadBalancer
