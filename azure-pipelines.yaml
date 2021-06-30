@@ -25,7 +25,7 @@ stages:
       displayName: 'Package zeebe cluster helm chart'
       inputs:
         command: package
-        chartPath: zeebe-cluster-helm/zeebe-cluster-helm
+        chartPath: zeebe-cluster-helm
         destination: $(Build.ArtifactStagingDirectory)-cluster
         updatedependency: true
         save: false
@@ -34,7 +34,7 @@ stages:
       displayName: 'Package zeebe operator helm chart'
       inputs:
         command: package
-        chartPath: zeebe-cluster-helm/zeebe-operate-helm
+        chartPath: zeebe-operate-helm
         destination: $(Build.ArtifactStagingDirectory)-operator
         updatedependency: true
         save: false
