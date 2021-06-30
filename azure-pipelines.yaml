@@ -1,0 +1,121 @@
+name: $(Date:yyyyMMdd).$(Rev:r).$(Build.BuildId)
+
+trigger: none
+pr: none
+
+variables:
+- name: release_name
+  value: zeebe
+
+
+stages:
+
+- stage: BUILD
+  displayName: 'Package helm charts'
+  pool:
+    vmImage: windows-2019
+  jobs:
+  - job: BUILD
+    displayName: 'Package helm charts'
+    steps:
+    - task: HelmDeploy@0
+      displayName: 'Package zeebe cluster helm chart'
+      inputs:
+        command: package
+        chartPath: zeebe-cluster-helm/zeebe-cluster-helm
+        destination: $(Build.ArtifactStagingDirectory)-cluster
+        updatedependency: true
+        save: false
+
+    - task: HelmDeploy@0
+      displayName: 'Package zeebe operator helm chart'
+      inputs:
+        command: package
+        chartPath: zeebe-cluster-helm/zeebe-operate-helm
+        destination: $(Build.ArtifactStagingDirectory)-operator
+        updatedependency: true
+        save: false
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop-cluster'
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)-cluster
+        ArtifactName: drop-cluster
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop-operator'
+      inputs:
+           PathtoPublish: $(Build.ArtifactStagingDirectory)-operator
+           ArtifactName: drop-operator
+
+
+- stage: TEST_RELEASE
+  displayName: 'Deploy zeebe cluster & operator in Test'
+  pool:
+    vmImage: windows-2019
+  jobs:
+  - deployment: DeployZeebeTest
+    displayName: 'Deploy zeebe cluster & operator'
+    environment: 
+      name: 'zeebe-test'               
+      resourceName: 'zeebe-test'        
+      resourceType: Kubernetes
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: HelmDeploy@0
+            displayName: 'Deploy zeebe cluster'
+            inputs:
+              namespace: 'zeebe-test'
+              command: upgrade
+              arguments: '--timeout 900s'
+              chartType: FilePath
+              chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
+              releaseName: '$(release_name)-cluster' 
+
+          - task: HelmDeploy@0
+            displayName: 'Deploy zeebe operator'
+            condition: succeededOrFailed()
+            inputs:
+              namespace: 'zeebe-test'
+              command: upgrade
+              chartType: FilePath
+              chartPath: '$(Agent.BuildDirectory)/drop-operator/zeebe-operate-0.1.0.tgz'
+              releaseName: '$(release_name)-operator'
+
+- stage: UAT_RELEASE
+  displayName: 'Deploy zeebe cluster & operator in UAT'
+  condition: succeeded('BUILD')
+  pool:
+    name: aks-pool-uat
+  jobs:
+  - deployment: DeployZeebeUAT
+    displayName: 'Deploy zeebe cluster & operator'
+    environment: 
+      name: 'zeebe-uat'               
+      resourceName: 'zeebe-uat'        
+      resourceType: Kubernetes
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: HelmDeploy@0
+            displayName: 'Deploy zeebe cluster'
+            inputs:
+              namespace: 'zeebe-uat'
+              command: upgrade
+              arguments: '--timeout 600s'
+              chartType: FilePath
+              chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
+              releaseName: '$(release_name)-cluster' 
+
+          - task: HelmDeploy@0
+            displayName: 'Deploy zeebe operator'
+            condition: succeededOrFailed()
+            inputs:
+              namespace: 'zeebe-uat'
+              command: upgrade
+              chartType: FilePath
+              chartPath: '$(Agent.BuildDirectory)/drop-operator/zeebe-operate-0.1.0.tgz'
+              releaseName: '$(release_name)-operator'

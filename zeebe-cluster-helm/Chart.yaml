@@ -1,0 +1,20 @@
+apiVersion: v2
+appVersion: "1.16.0"
+dependencies:
+- condition: elasticsearch.enabled
+  name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 7.5.1
+- condition: kibana.enabled
+  name: kibana
+  repository: https://helm.elastic.co
+  version: 7.5.1
+- condition: prometheus.enabled
+  name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 12.0.1
+description: Zeebe Cluster Helm Chart for Kubernetes
+icon: https://zeebe.io/img/zeebe-logo.png
+name: zeebe-cluster-helm
+type: application
+version: 0.1.0
