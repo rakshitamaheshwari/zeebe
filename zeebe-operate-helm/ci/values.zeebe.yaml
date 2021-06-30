@@ -18,6 +18,9 @@ image:
   repository: camunda/operate
   tag: 0.23.2
 
+service-operator:
+  lb-internal: "false"
+
 resources: 
   requests:
     cpu: 500m
