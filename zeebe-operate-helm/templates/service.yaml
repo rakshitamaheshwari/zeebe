@@ -21,7 +21,7 @@ kind: Service
 metadata:
   name: operator-svc
   annotations: 
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true" #{{ .Values.svc.lb_internal }}
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true" 
 spec:
   ports:
   - name: proxy-port
