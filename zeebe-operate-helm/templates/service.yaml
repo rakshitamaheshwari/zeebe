@@ -1,7 +1,3 @@
-parameters:
-- name: environment
-  type: string
-
 apiVersion: v1
 kind: Service
 metadata:
