@@ -19,7 +19,7 @@ image:
   tag: 0.23.2
 
 lb:
-  internal: "false"
+  internal: false
 
 resources: 
   requests:
