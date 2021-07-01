@@ -18,8 +18,8 @@ image:
   repository: camunda/operate
   tag: 0.23.2
 
-lb:
-  internal: "false"
+loadbalancer:
+  internal: false
 
 resources: 
   requests:

@@ -18,7 +18,7 @@ image:
   repository: camunda/operate
   tag: 0.23.2
 
-lb:
+loadbalancer:
   internal: true
 
 resources: 
