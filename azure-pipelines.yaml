@@ -59,41 +59,41 @@ stages:
            ArtifactName: drop-operator
 
 
-- stage: Zeebe_RELEASE
-  displayName: 'Deploy zeebe cluster & operator in Test'
-  pool:
-    vmImage: windows-2019
-  jobs:
-  - deployment: DeployZeebeTest
-    displayName: 'Deploy zeebe cluster & operator'
-    environment: 
-      name: 'zeebe'               
-      resourceName: 'zeebe'        
-      resourceType: Kubernetes
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          # - task: HelmDeploy@0
-          #   displayName: 'Deploy zeebe cluster'
-          #   inputs:
-          #     namespace: 'zeebe'
-          #     command: upgrade
-          #     arguments: '--timeout 900s'
-          #     chartType: FilePath
-          #     chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
-          #     releaseName: '$(release_name)-cluster' 
+# - stage: Zeebe_RELEASE
+#   displayName: 'Deploy zeebe cluster & operator in Test'
+#   pool:
+#     vmImage: windows-2019
+#   jobs:
+#   - deployment: DeployZeebeTest
+#     displayName: 'Deploy zeebe cluster & operator'
+#     environment: 
+#       name: 'zeebe'               
+#       resourceName: 'zeebe'        
+#       resourceType: Kubernetes
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           # - task: HelmDeploy@0
+#           #   displayName: 'Deploy zeebe cluster'
+#           #   inputs:
+#           #     namespace: 'zeebe'
+#           #     command: upgrade
+#           #     arguments: '--timeout 900s'
+#           #     chartType: FilePath
+#           #     chartPath: '$(Agent.BuildDirectory)/drop-cluster/zeebe-cluster-helm-0.1.0.tgz'
+#           #     releaseName: '$(release_name)-cluster' 
 
-          - task: HelmDeploy@0
-            displayName: 'Deploy zeebe operator'
-            condition: succeededOrFailed()
-            inputs:
-              namespace: 'zeebe'
-              command: upgrade
-              chartType: FilePath
-              chartPath: '$(Agent.BuildDirectory)/drop-operator/zeebe-operate-0.1.0.tgz'
-              releaseName: '$(release_name)-operator'
-              valueFile: '$(Agent.BuildDirectory)/drop-operator/values.zeebe.yaml'
+#           - task: HelmDeploy@0
+#             displayName: 'Deploy zeebe operator'
+#             condition: succeededOrFailed()
+#             inputs:
+#               namespace: 'default'
+#               command: upgrade
+#               chartType: FilePath
+#               chartPath: '$(Agent.BuildDirectory)/drop-operator/zeebe-operate-0.1.0.tgz'
+#               releaseName: '$(release_name)-operator'
+#               valueFile: '$(Agent.BuildDirectory)/drop-operator/values.zeebe.yaml'
 
 - stage: Default_RELEASE
   displayName: 'Deploy zeebe cluster & operator in UAT'
