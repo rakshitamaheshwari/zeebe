@@ -104,7 +104,7 @@ stages:
   - deployment: DeployZeebeUAT
     displayName: 'Deploy zeebe cluster & operator'
     environment: 
-      name: 'zeebe'               
+      name: 'trigger'               
       resourceName: 'default'        
       resourceType: Kubernetes
     strategy:
