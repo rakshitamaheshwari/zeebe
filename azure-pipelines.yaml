@@ -16,7 +16,8 @@ stages:
 - stage: BUILD
   displayName: 'Package helm charts'
   pool:
-    vmImage: windows-2019
+    #vmImage: windows-2019
+    name: agentvmss
   jobs:
   - job: BUILD
     displayName: 'Package helm charts'
@@ -99,7 +100,8 @@ stages:
   displayName: 'Deploy zeebe cluster & operator in UAT'
   condition: succeeded('BUILD')
   pool:
-    vmImage: windows-2019
+    #vmImage: windows-2019
+    name: agentvmss
   jobs:
   - deployment: DeployZeebeUAT
     displayName: 'Deploy zeebe cluster & operator'
