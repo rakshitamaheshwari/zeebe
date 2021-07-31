@@ -108,8 +108,8 @@ stages:
     environment: 
       #name: 'trigger'
       name: abc
-      resourceName: 'default'        
-      resourceType: Kubernetes
+      #resourceName: 'default'        
+      #resourceType: Kubernetes
     strategy:
       runOnce:
         deploy:
